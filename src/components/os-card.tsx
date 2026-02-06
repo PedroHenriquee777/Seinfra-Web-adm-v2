@@ -56,18 +56,17 @@ export function OsCard({ card, onStatusChange }: Props) {
       <OsDescDialog
         Trigger={buttonElement}
         Category={card.category}
-        Local={card.local}
+        Address={card.address}
         Reference={card.reference}
         Problem={card.problem}
-        RequestDate={card.requestDate}
-        ConclusionDate={card.conclusionDate}
+        RequestDate={card.dateRequest}
+        ConclusionDate={card.dateRequestConcluded}
         State={statusConfig.state}
-        CPF={card.usuario?.cpf || ""}
-        Name={card.usuario?.nome || ""}
-        Number={card.usuario?.telefone || ""}
+        CPF={card.user?.cpf || ""}
+        Name={card.user?.name || ""}
+        Number={card.user?.phone || ""}
         Variant={statusConfig.variant}
-        ImgURL={undefined}
-        IdOrdem={card.id_ordem}
+        IdOrder={card.id_order}
         onStatusChange={onStatusChange}
       />
 
@@ -75,11 +74,11 @@ export function OsCard({ card, onStatusChange }: Props) {
         <h2 className="font-semibold text-gray-700 text-lg">
           Categoria: {card.category}
         </h2>
-        <p className="text-gray-500 text-sm">Local: {card.local}</p>
+        <p className="text-gray-500 text-sm">Local: {card.address}</p>
         <p className="text-gray-500 text-sm">Problema: {card.problem}</p>
 
         <p className="text-gray-400 text-xs mt-1">
-          Data da solicitação: {card.requestDate}
+          Data da solicitação: {card.dateRequest}
         </p>
       </div>
     </div>
