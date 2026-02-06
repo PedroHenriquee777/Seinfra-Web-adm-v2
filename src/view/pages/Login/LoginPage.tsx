@@ -17,29 +17,49 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginAdmin } from "@/services/auth";
 import { adminLoginSchema } from "@/services/zodSchemas";
+import { ErrorLoginDialog } from "@/components/error-login";
+import { LoaderDialog } from "@/components/loader-dialog";
+import { useState } from "react";
 
 export function LoginPage() {
+  const [openError, setOpenError] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof adminLoginSchema>>({
     defaultValues: {
       cpf: "",
-      senha: "",
+      password: "",
     },
     resolver: zodResolver(adminLoginSchema),
   });
 
   async function onSubmit(data: z.infer<typeof adminLoginSchema>) {
     try {
-      const response = await loginAdmin(data);
-      localStorage.setItem("token", response.data.token);
-      console.log("RESPONSE:", response.data.token);
+      setLoading(true)
+
+      await loginAdmin({
+        cpf: data.cpf.replace(/\D/g, ""),
+        password: data.password,
+        });
+
       navigate({ to: "/", replace: true });
     } catch (error) {
-      console.log({error: "token nao logado"});
+       setOpenError(true)
+    }  finally {
+      setLoading(false)
     }
   }
   
   return (
+    <div>
+       <LoaderDialog 
+      open={loading}
+      />
+      <ErrorLoginDialog 
+      open={openError}
+      onOpenChange={setOpenError}
+      />
     <div className="relative flex justify-center items-center flex-col min-h-dvh h-auto font-semibold">
       <img
         src={pinkLine}
@@ -74,7 +94,7 @@ export function LoginPage() {
           />
           <Controller
             control={form.control}
-            name="senha"
+            name="password"
             render={({ field, fieldState }) => (
               <Field orientation={"seinfra"} data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>Senha</FieldLabel>
@@ -108,6 +128,7 @@ export function LoginPage() {
           className="absolute -right-4 sm:right-0 -bottom-10"
         />
       </form>
+    </div>
     </div>
   );
 }

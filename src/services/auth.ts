@@ -1,13 +1,13 @@
 import { api } from "./api";
 
-export function loginAdmin(data: { cpf: string; senha: string }) {
+export function loginAdmin(data: { cpf: string; password: string }) {
     return api.post ("/login-admin", data)
 };
 
 export function registerAdmin(data: {
   cpf: string;
-  senha: string;
-  telefone: string;
+  password: string;
+  phone: string;
 }) {
   return api.post("/registro-admin", data);
 }

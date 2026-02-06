@@ -16,11 +16,11 @@ export function mapOrderToOsCard(order: any): OsCard {
 
   return {
     category: "Ordem de Serviço",
+    address: order.address,
     reference: order.reference,
-    address: order.endereco,
-    problem: order.descricao,
-    dateRequest: order.data_criacao ? new Date(order.data_criacao).toLocaleDateString("pt-BR") : "",
-    dateRequestConcluded: order.data_conclusao ? new Date(order.data_conclusao).toLocaleDateString("pt-BR") : "",
+    problem: order.description,
+    dateRequest: order.creation_date ? new Date(order.creation_date).toLocaleDateString("pt-BR") : "",
+    dateRequestConcluded: order.concluded_date ? new Date(order.concluded_date).toLocaleDateString("pt-BR") : "",
     state: statusMap[order.status] ?? "new",
   };
 }
