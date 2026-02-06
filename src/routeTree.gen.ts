@@ -9,8 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterAdminRouteImport } from './routes/register-admin'
+import { Route as OsInProgressRouteImport } from './routes/os-in-progress'
+import { Route as OsCompletedRouteImport } from './routes/os-completed'
+import { Route as NewOsRouteImport } from './routes/new-os'
+import { Route as LoginAdminRouteImport } from './routes/login-admin'
+import { Route as FilterReportsRouteImport } from './routes/filter-reports'
+import { Route as AllOsRouteImport } from './routes/all-os'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RegisterAdminRoute = RegisterAdminRouteImport.update({
+  id: '/register-admin',
+  path: '/register-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OsInProgressRoute = OsInProgressRouteImport.update({
+  id: '/os-in-progress',
+  path: '/os-in-progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OsCompletedRoute = OsCompletedRouteImport.update({
+  id: '/os-completed',
+  path: '/os-completed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewOsRoute = NewOsRouteImport.update({
+  id: '/new-os',
+  path: '/new-os',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login-admin',
+  path: '/login-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FilterReportsRoute = FilterReportsRouteImport.update({
+  id: '/filter-reports',
+  path: '/filter-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AllOsRoute = AllOsRouteImport.update({
+  id: '/all-os',
+  path: '/all-os',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +61,130 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/all-os': typeof AllOsRoute
+  '/filter-reports': typeof FilterReportsRoute
+  '/login-admin': typeof LoginAdminRoute
+  '/new-os': typeof NewOsRoute
+  '/os-completed': typeof OsCompletedRoute
+  '/os-in-progress': typeof OsInProgressRoute
+  '/register-admin': typeof RegisterAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/all-os': typeof AllOsRoute
+  '/filter-reports': typeof FilterReportsRoute
+  '/login-admin': typeof LoginAdminRoute
+  '/new-os': typeof NewOsRoute
+  '/os-completed': typeof OsCompletedRoute
+  '/os-in-progress': typeof OsInProgressRoute
+  '/register-admin': typeof RegisterAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/all-os': typeof AllOsRoute
+  '/filter-reports': typeof FilterReportsRoute
+  '/login-admin': typeof LoginAdminRoute
+  '/new-os': typeof NewOsRoute
+  '/os-completed': typeof OsCompletedRoute
+  '/os-in-progress': typeof OsInProgressRoute
+  '/register-admin': typeof RegisterAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/all-os'
+    | '/filter-reports'
+    | '/login-admin'
+    | '/new-os'
+    | '/os-completed'
+    | '/os-in-progress'
+    | '/register-admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/all-os'
+    | '/filter-reports'
+    | '/login-admin'
+    | '/new-os'
+    | '/os-completed'
+    | '/os-in-progress'
+    | '/register-admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/all-os'
+    | '/filter-reports'
+    | '/login-admin'
+    | '/new-os'
+    | '/os-completed'
+    | '/os-in-progress'
+    | '/register-admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AllOsRoute: typeof AllOsRoute
+  FilterReportsRoute: typeof FilterReportsRoute
+  LoginAdminRoute: typeof LoginAdminRoute
+  NewOsRoute: typeof NewOsRoute
+  OsCompletedRoute: typeof OsCompletedRoute
+  OsInProgressRoute: typeof OsInProgressRoute
+  RegisterAdminRoute: typeof RegisterAdminRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register-admin': {
+      id: '/register-admin'
+      path: '/register-admin'
+      fullPath: '/register-admin'
+      preLoaderRoute: typeof RegisterAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/os-in-progress': {
+      id: '/os-in-progress'
+      path: '/os-in-progress'
+      fullPath: '/os-in-progress'
+      preLoaderRoute: typeof OsInProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/os-completed': {
+      id: '/os-completed'
+      path: '/os-completed'
+      fullPath: '/os-completed'
+      preLoaderRoute: typeof OsCompletedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-os': {
+      id: '/new-os'
+      path: '/new-os'
+      fullPath: '/new-os'
+      preLoaderRoute: typeof NewOsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login-admin': {
+      id: '/login-admin'
+      path: '/login-admin'
+      fullPath: '/login-admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/filter-reports': {
+      id: '/filter-reports'
+      path: '/filter-reports'
+      fullPath: '/filter-reports'
+      preLoaderRoute: typeof FilterReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/all-os': {
+      id: '/all-os'
+      path: '/all-os'
+      fullPath: '/all-os'
+      preLoaderRoute: typeof AllOsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +197,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AllOsRoute: AllOsRoute,
+  FilterReportsRoute: FilterReportsRoute,
+  LoginAdminRoute: LoginAdminRoute,
+  NewOsRoute: NewOsRoute,
+  OsCompletedRoute: OsCompletedRoute,
+  OsInProgressRoute: OsInProgressRoute,
+  RegisterAdminRoute: RegisterAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
