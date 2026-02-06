@@ -22,6 +22,8 @@ import { registerAdmin } from "@/services/auth";
 import { CreatedRegisterDialog } from "@/components/created-register";
 import { ErrorRegisterDialog } from "@/components/error-register";
 import { LoaderDialog } from "@/components/loader-dialog";
+import { formatCPF } from "@/utils/format-cpf";
+import { formatPhone } from "@/utils/format-phone";
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -102,7 +104,9 @@ export function RegisterPage() {
                   data-invalid={fieldState.invalid}
                 >
                   <FieldLabel htmlFor={field.name}>Telefone</FieldLabel>
-                  <Input {...field} id={field.name} />
+                  <Input {...field} id={field.name} inputMode="numeric" onChange={(e) => {
+                    field.onChange(formatPhone(e.target.value))
+                  }} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -118,7 +122,14 @@ export function RegisterPage() {
                   data-invalid={fieldState.invalid}
                 >
                   <FieldLabel htmlFor={field.name}>CPF</FieldLabel>
-                  <Input {...field} id={field.name} />
+                  <Input
+											{...field}
+											id={field.name}
+											inputMode="numeric"
+											onChange={(e) => {
+												field.onChange(formatCPF(e.target.value));
+											}}
+										/>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
