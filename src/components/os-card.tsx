@@ -56,7 +56,7 @@ export function OsCard({ card, onStatusChange }: Props) {
       <OsDescDialog
         Trigger={buttonElement}
         Category={card.category}
-        Local={card.local}
+        Address={card.local}
         Reference={card.reference}
         Problem={card.problem}
         RequestDate={card.requestDate}

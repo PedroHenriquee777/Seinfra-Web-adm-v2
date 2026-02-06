@@ -1,5 +1,4 @@
 import { type ReactNode, useState } from "react";
-import { toast } from "sonner";
 import {
 	Dialog,
 	DialogContent,
@@ -18,7 +17,7 @@ import { Button } from "./ui/button";
 interface Props {
 	Trigger: ReactNode;
 	Category: string;
-	Local: string;
+	Address: string;
 	Reference: string;
 	Problem: string;
 	RequestDate: string;
@@ -35,7 +34,7 @@ interface Props {
 
 export function OsDescDialog({
 	Category,
-	Local,
+	Address,
 	Reference,
 	Problem,
 	RequestDate,
@@ -213,7 +212,7 @@ export function OsDescDialog({
 										<span className="text-seinfra-blue-light-700-70">
 											Endereço:{" "}
 										</span>
-										{Local}
+										{Address}
 									</h3>
 									<h3>
 										<span className="text-seinfra-blue-light-700-70">
