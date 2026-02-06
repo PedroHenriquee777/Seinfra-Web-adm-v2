@@ -36,16 +36,16 @@ export function extractCategory(description: string): string { const match = des
 
 export interface OsCard {
   category: string;
-  local: string;
+  address: string;
   reference: string;
   problem: string;
-  requestDate: string;
-  conclusionDate: string;
+  dateRequest: string;
+  dateRequestConcluded: string;
   state: OsStatus;
-  id_ordem?: number;
-  usuario?: {
-    nome: string;
-    telefone: string;
+  id_order?: number;
+  user?: {
+    name: string;
+    phone: string;
     cpf: string;
   };
 }
