@@ -20,6 +20,7 @@ import { adminLoginSchema } from "@/services/zodSchemas";
 import { ErrorLoginDialog } from "@/components/error-login";
 import { LoaderDialog } from "@/components/loader-dialog";
 import { useState } from "react";
+import { formatCPF } from "@/utils/format-cpf";
 
 export function LoginPage() {
   const [openError, setOpenError] = useState(false)
@@ -85,7 +86,9 @@ export function LoginPage() {
             render={({ field, fieldState }) => (
               <Field orientation={"seinfra"} data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>CPF</FieldLabel>
-                <Input {...field} id={field.name} />
+                <Input {...field} id={field.name} inputMode="numeric" onChange={(e) => {
+                  field.onChange(formatCPF(e.target.value))
+                }} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

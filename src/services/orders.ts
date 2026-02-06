@@ -1,7 +1,7 @@
 import { api } from "./api";
 
-export function requestOrders(mensagem: string) {
-  return api.get(`/solicitarOrdens?mensagem=${mensagem}`);
+export function requestOrders(message: string) {
+  return api.get(`/solicitarOrdens?message=${message}`);
 }
 
 export function cancelOrder(data: {
