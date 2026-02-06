@@ -62,13 +62,14 @@ export function OsCard({ card, onStatusChange }: Props) {
         RequestDate={card.dateRequest}
         ConclusionDate={card.dateRequestConcluded}
         State={statusConfig.state}
-        CPF={card.user?.cpf || ""}
-        Name={card.user?.name || ""}
-        Number={card.user?.phone || ""}
+        CPF={card.applicant?.cpf || ""}
+        Name={card.applicant?.name || ""}
+        Number={card.applicant?.phone || ""}
         Variant={statusConfig.variant}
         IdOrder={card.id_order}
         onStatusChange={onStatusChange}
       />
+      console.log(card);
 
       <div className="flex flex-col gap-1 flex-1">
         <h2 className="font-semibold text-gray-700 text-lg">

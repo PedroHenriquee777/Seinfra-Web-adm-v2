@@ -43,7 +43,7 @@ export interface OsCard {
   dateRequestConcluded: string;
   state: OsStatus;
   id_order?: number;
-  user?: {
+  applicant?: {
     name: string;
     phone: string;
     cpf: string;
