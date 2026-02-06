@@ -19,16 +19,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { adminRegisterSchema } from "@/services/zodSchemas";
 import { registerAdmin } from "@/services/auth";
+import { CreatedRegisterDialog } from "@/components/created-register";
+import { ErrorRegisterDialog } from "@/components/error-register";
+import { LoaderDialog } from "@/components/loader-dialog";
 
 export function RegisterPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
+	const [openError, setOpenError] = useState(false);
+	const [successOpen, setSuccessOpen] = useState(false)
 
   const form = useForm<z.infer<typeof adminRegisterSchema>>({
     defaultValues: {
       cpf: "",
-      telefone: "",
-      senha: "",
+      phone: "",
+      password: "",
       confirmPassword: "",
     },
     resolver: zodResolver(adminRegisterSchema),
@@ -36,23 +42,32 @@ export function RegisterPage() {
 
   async function onSubmit(data: z.infer<typeof adminRegisterSchema>) {
     try {
+      setLoading(true);
+
       if (step === 1) {
-        const response = await registerAdmin({
-          cpf: data.cpf,
-          senha: data.senha,
-          telefone: data.telefone,
+        await registerAdmin({
+          cpf: data.cpf.replace(/\D/g, ""),
+          password: data.password,
+          phone: data.phone,
         });
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-        }
+
+        setSuccessOpen(true)
+        
         navigate({ to: "/login-admin", replace: true });
       }
     } catch (error: any) {
-        error
-    }
+      setOpenError(true);
+    } finally {
+			setLoading(false);
+		}
   }
 
   return (
+    <div>
+      <LoaderDialog open={loading} />
+			<ErrorRegisterDialog open={openError} onOpenChange={setOpenError} />
+			<CreatedRegisterDialog	open={successOpen} onOpenChange={setSuccessOpen} />
+
     <div className="relative flex justify-center items-center flex-col min-h-dvh h-auto font-semibold">
       <img
         src={pinkLine}
@@ -80,7 +95,7 @@ export function RegisterPage() {
           <FieldGroup>
             <Controller
               control={form.control}
-              name="telefone"
+              name="phone"
               render={({ field, fieldState }) => (
                 <Field
                   orientation={"seinfra"}
@@ -110,7 +125,7 @@ export function RegisterPage() {
                   <Button
                     className="px-4 py-3 mt-14 rounded-3xl"
                     onClick={async () => {
-                      const ok = await form.trigger(["telefone", "cpf"]);
+                      const ok = await form.trigger(["phone", "cpf"]);
                       if (ok) setStep(1);
                     }}
                   >
@@ -125,7 +140,7 @@ export function RegisterPage() {
           <FieldGroup>
             <Controller
               control={form.control}
-              name="senha"
+              name="password"
               render={({ field, fieldState }) => (
                 <Field
                   orientation={"seinfra"}
@@ -170,6 +185,7 @@ export function RegisterPage() {
           className="absolute -right-4 sm:right-0 -bottom-10"
         />
       </form>
+    </div>
     </div>
   );
 }
