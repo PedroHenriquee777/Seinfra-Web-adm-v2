@@ -8,6 +8,12 @@ export function listOrders(data: any) {
   return api.get("/minhas-solicitacao", data);
 }
 
-export function generatePDFRequest() {
-  return api.get("/gerarPdfSolicitacoes", { responseType: "blob" });
+export function generatePDFRequest(startDate: string, endDate: string) {
+  return api.get("/gerarPdfSolicitacoes", {
+    params: {
+      startDate,
+      endDate,
+    },
+    responseType: "blob",
+  });
 }
