@@ -16,20 +16,28 @@ export function OsInProgressPage() {
   const [loading, setLoading] = useState(false)
   const [openError, setOpenError] = useState(false)
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true)
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await requestOrders("recente");
+      const inProgressOrders = response.data
+        .filter((o: any) => o.status === "InProgress")
+        .map((o: any) => {
+          const mapped = mapOrderToOsCard(o);
+          return { ...mapped, state: "inProgress" };
+        });
+      
+      setOrders(inProgressOrders);
 
-        const response = await requestOrders("pendente");
-        const mappedOrders = response.data.map(mapOrderToOsCard);
-        setOrders(mappedOrders);
-      } catch (error) {
-        setOpenError(true)
-      } finally {
-        setLoading(false)
-      }
-    };
+    } catch (error) {
+      setOpenError(true);
+      console.error("Erro ao buscar O.S em andamento:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchOrders();
   }, []);
 
@@ -59,11 +67,11 @@ export function OsInProgressPage() {
             />
             <MenuDialog />
           </div>
-          <TitleHeader title="O.S em andamento" />
+          <TitleHeader title="Ordens de Serviço em andamento" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 gap-x-10 w-full px-4">
             {orders.map((card, i) => (
-              <OsCard key={i} card={card} />
+              <OsCard key={i} card={card} onStatusChange={fetchOrders}  />
             ))}
           </div>
 
