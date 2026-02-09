@@ -16,26 +16,26 @@ export function NewOsPage() {
   const [loading, setLoading] = useState(false)
   const [openError, setOpenError] = useState(false)
 
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await requestOrders("recente");
+      const pending = response.data
+        .filter((o: any) => o.status === "PENDENTE")
+        .map((o: any) => {
+          const mapped = mapOrderToOsCard(o);
+          return { ...mapped, state: "new" };
+        });
+
+      setOrders(pending);
+    } catch (error) {
+      console.error("Erro ao buscar O.S recentes pendentes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true)
-
-        const response = await requestOrders("recente");
-        const pending = response.data
-          .filter((o: any) => o.status === "PENDENTE")
-          .map((o: any) => {
-            const mapped = mapOrderToOsCard(o);
-            return { ...mapped, state: "new" };
-          });
-
-        setOrders(pending);
-      } catch (error) {
-        setOpenError(true)
-      } finally {
-        setLoading(false)
-      }
-    };
     fetchOrders();
   }, []);
 
@@ -69,7 +69,7 @@ export function NewOsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 gap-x-10 w-full px-4">
             {orders.map((card, i) => (
-              <OsCard key={i} card={card} />
+              <OsCard key={i} card={card} onStatusChange={fetchOrders} />
             ))}
           </div>
 
