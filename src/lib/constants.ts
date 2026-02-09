@@ -41,7 +41,7 @@ export interface OsCard {
   problem: string;
   dateRequest: string;
   dateRequestConcluded: string;
-  state: OsStatus;
+  status: OsStatus;
   id_order?: number;
   applicant?: {
     name: string;

@@ -2,7 +2,7 @@ import BlueRetangle from "@/assets/blueRetangle.svg";
 import GreenRetangle from "@/assets/greenRetangle.svg";
 import YellowRetangle from "@/assets/yellowRetangle.svg";
 import { Button } from "@/components/ui/button";
-import type { OsCard as OsCardType } from "@/lib/constants";
+import type { OsCard as OsCardType, OsStatus } from "@/lib/constants";
 import { OsDescDialog } from "./os-desc-dialog";
 
 interface Props {
@@ -10,45 +10,60 @@ interface Props {
   onStatusChange?: () => void;
 }
 
+type VariantType = "newOS" | "OSInProgess" | "default";
+
+type StatusConfig = Record<
+  OsStatus,
+  {
+    retangle: string;
+    button: string;
+    color: string;
+    variant: VariantType;
+    state?: string;
+  }
+>;
+
 export function OsCard({ card, onStatusChange }: Props) {
-  const statusConfig = {
+  const statusConfig: StatusConfig = {
     new: {
       retangle: BlueRetangle,
       button: "Pendente",
       color: "bg-seinfra-blue-light-600-60",
-      variant: "newOS" as const,
+      variant: "newOS",
       state: undefined,
     },
     inProgress: {
       retangle: YellowRetangle,
       button: "Em Execução",
       color: "bg-seinfra-yellow-500",
-      variant: "OSInProgess" as const,
+      variant: "OSInProgess",
       state: "Em execução",
     },
     completed: {
       retangle: GreenRetangle,
       button: "Finalizada",
       color: "bg-seinfra-green-500",
-      variant: "default" as const,
+      variant: "default",
       state: "Finalizada",
     },
-  }[card.state];
+  };
+
+  const currentStatus = statusConfig[card.status as OsStatus];
 
   const buttonElement = (
     <Button
       type="button"
       variant="link"
-     className={`cursor-pointer absolute top-4 right-4 z-10 ${statusConfig.color} text-white px-4 py-1 w-fit! h-10! rounded-lg text-sm font-semibold hover:opacity-90 transition`}
+      className={`cursor-pointer absolute top-4 right-4 z-10 ${currentStatus.color} text-white px-4 py-1 w-fit! h-10! rounded-lg text-sm font-semibold hover:opacity-90 transition`}
     >
-      {statusConfig.button}
+      {currentStatus.button}
     </Button>
   );
 
   return (
     <div className="bg-background shadow-md rounded-xl p-6 h-40 border border-gray-200 relative hover:shadow-lg transition flex flex-col justify-between">
       <img
-        src={statusConfig.retangle}
+        src={currentStatus.retangle}
         alt="Background Card"
         className="absolute left-0 top-1 z-0"
       />
@@ -61,15 +76,14 @@ export function OsCard({ card, onStatusChange }: Props) {
         Problem={card.problem}
         RequestDate={card.dateRequest}
         ConclusionDate={card.dateRequestConcluded}
-        State={statusConfig.state}
+        State={currentStatus.state}
         CPF={card.applicant?.cpf || ""}
         Name={card.applicant?.name || ""}
         Number={card.applicant?.phone || ""}
-        Variant={statusConfig.variant}
+        Variant={currentStatus.variant}
         IdOrder={card.id_order}
         onStatusChange={onStatusChange}
       />
-      console.log(card);
 
       <div className="flex flex-col gap-1 flex-1">
         <h2 className="font-semibold text-gray-700 text-lg">

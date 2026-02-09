@@ -53,8 +53,8 @@ export function OsDescDialog({
 	const [loading, setLoading] = useState(false);
 	const [justification, setJustification] = useState("");
 
-	const handleAlterarStatus = async (
-		novoStatus: "PENDENTE" | "EM_EXECUCAO" | "CONCLUIDO",
+	const handleChangeStatus = async (
+		newStatus: "PENDENTE" | "EM_EXECUCAO" | "CONCLUIDO",
 	) => {
 		if (!IdOrder) {
 			return;
@@ -64,10 +64,10 @@ export function OsDescDialog({
 			setLoading(true);
 			await changeOrderStatus({
 				id_order: IdOrder,
-				status: novoStatus,
+				status: newStatus,
 			});
 			setOpen(false);
-			if (novoStatus === "EM_EXECUCAO") {
+			if (newStatus === "EM_EXECUCAO") {
 				setOpenForwardedDialog(true);
 			}
 			if (onStatusChange) {
@@ -82,17 +82,17 @@ export function OsDescDialog({
 		}
 	};
 
-	const handleEncaminhar = () => {
-		handleAlterarStatus("EM_EXECUCAO");
+	const handleForward= () => {
+		handleChangeStatus("EM_EXECUCAO");
 	};
 
-	const handleConcluir = () => {
-		handleAlterarStatus("CONCLUIDO");
+	const handleFinish = () => {
+		handleChangeStatus("CONCLUIDO");
 	};
 
-	const handleExcluir = async () => {
+	const handleDelete = async () => {
 		if (!IdOrder) {
-			return;
+			return ;
 		}
 
 		if (!justification.trim()) {
@@ -257,8 +257,8 @@ export function OsDescDialog({
 												<Button
 													onClick={
 														Variant === "newOS"
-															? handleEncaminhar
-															: handleConcluir
+															? handleForward
+															: handleFinish
 													}
 													disabled={loading || !IdOrder}
 													className={cn(
@@ -331,7 +331,7 @@ export function OsDescDialog({
 							</Button>
 							<Button
 								type="button"
-								onClick={handleExcluir}
+								onClick={handleDelete}
 								disabled={loading || !justification.trim()}
 								className="!w-fit bg-red-500 hover:bg-red-600 text-white mr-15"
 							>
