@@ -16,22 +16,22 @@ export function AllOsPage() {
   const [loading, setLoading] = useState(false)
   const [openError, setOpenError] = useState(false)
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true)
+  const fetchOrders = async () => {
+		try {
+			setLoading(true);
+			const response = await requestOrders("recente");
+			const mappedOrders = response.data.map(mapOrderToOsCard);
+			setOrders(mappedOrders);
+		} catch (error) {
+			console.error("Erro ao buscar todas as O.S:", error);
+		} finally {
+			setLoading(false);
+		}
+	};
 
-        const response = await requestOrders("recente");
-        const mappedOrders = response.data.map(mapOrderToOsCard);
-        setOrders(mappedOrders);
-      } catch (error) {
-        setOpenError(true)
-      } finally {
-        setLoading(false)
-      }
-    };
-    fetchOrders();
-  }, []);
+	useEffect(() => {
+		fetchOrders();
+	}, []);
 
   return (
     <div>       
@@ -59,11 +59,11 @@ export function AllOsPage() {
             />
             <MenuDialog />
           </div>
-          <TitleHeader title="Todas as O.S" />
+          <TitleHeader title="Todas as Ordens de serviço"/>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 gap-x-10 w-full px-4">
             {orders.map((card, i) => (
-              <OsCard key={i} card={card} />
+              <OsCard key={i} card={card} onStatusChange={fetchOrders} />
             ))}
           </div>
 
