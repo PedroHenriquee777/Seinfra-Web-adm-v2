@@ -8,24 +8,48 @@ import { OsCard } from "@/components/os-card";
 import { TitleHeader } from "@/components/title-header";
 import { requestOrders } from "@/services/orders";
 import { mapOrderToOsCard } from "@/lib/utils";
+import { LoaderDialog } from "@/components/loader-dialog";
+import { ErrorOSDialog } from "@/components/error-os-dialog";
 
 export function OsInProgressPage() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [openError, setOpenError] = useState(false)
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await requestOrders("recente");
+      const inProgressOrders = response.data
+        .filter((o: any) => o.status === "EM_EXECUCAO")
+        .map((o: any) => {
+          const mapped = mapOrderToOsCard(o);
+          return { ...mapped, state: "inProgress" };
+        });
+      
+      setOrders(inProgressOrders);
+
+    } catch (error) {
+      setOpenError(true);
+      console.error("Erro ao buscar O.S em andamento:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await requestOrders("pendente");
-        const mappedOrders = response.data.map(mapOrderToOsCard);
-        setOrders(mappedOrders);
-      } catch (error) {
-        console.error("Erro ao buscar O.S em andamento:", error);
-      }
-    };
     fetchOrders();
   }, []);
 
   return (
+    <div>
+    <LoaderDialog 
+    open={loading}
+    />
+    <ErrorOSDialog 
+    open={openError}
+    onOpenChange={setOpenError}
+    />
     <div className="relative flex flex-col min-h-dvh h-auto overflow-hidden">
       <img
         src={pinkLine}
@@ -43,11 +67,11 @@ export function OsInProgressPage() {
             />
             <MenuDialog />
           </div>
-          <TitleHeader title="O.S em andamento" />
+          <TitleHeader title="Ordens de Serviço em andamento" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 gap-x-10 w-full px-4">
             {orders.map((card, i) => (
-              <OsCard key={i} card={card} />
+              <OsCard key={i} card={card} onStatusChange={fetchOrders}  />
             ))}
           </div>
 
@@ -63,6 +87,7 @@ export function OsInProgressPage() {
           className="absolute -right-1 sm:right-0 bottom-0"
         />
       </main>
+    </div>
     </div>
   );
 }

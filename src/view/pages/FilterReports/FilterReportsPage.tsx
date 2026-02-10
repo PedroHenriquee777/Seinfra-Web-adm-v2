@@ -7,9 +7,62 @@ import { TitleHeader } from "@/components/title-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { generatePDFRequest } from "@/services/request";
+import { LoaderDialog } from "@/components/loader-dialog";
+import { ErrorDialog } from "@/components/error-dialog";
+import { ConcludedPDFDialog } from "@/components/concluded-pdf-dialog";
 
 export function FilterReportsPage() {
+	const [startDate, setStartDate] = useState("");
+	const [endDate, setEndDate] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [openConcluded, setOpenConcluded] = useState(false);
+	const [openError, setOpenError] = useState(false);
+
+  async function handleDownload() {
+		if (!startDate || !endDate) {
+			alert("Selecione o período");
+			return;
+		}
+
+		try {
+			setLoading(true);
+			const response = await generatePDFRequest(startDate,endDate,);
+
+			const blob = new Blob([response.data], {
+				type: "application/pdf",
+			});
+
+			const url = window.URL.createObjectURL(blob);
+
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = "relatorio_solicitacoes.pdf";
+			document.body.appendChild(a);
+			a.click();
+
+			a.remove();
+			window.URL.revokeObjectURL(url);
+
+			setOpenConcluded(true);
+		} catch (error) {
+			setOpenError(true);
+		} finally {
+			setLoading(false);
+		}
+	}
   return (
+    <div> {" "}
+    <LoaderDialog open={loading} />
+    <ConcludedPDFDialog
+      open={openConcluded}
+      onOpenChange={setOpenConcluded}
+    />
+    <ErrorDialog 
+    open={openError}
+    onOpenChange={setOpenError}
+    />
     <div className="relative flex flex-col min-h-dvh h-auto overflow-hidden">
       <img
         src={pinkLine}
@@ -28,48 +81,55 @@ export function FilterReportsPage() {
           </div>
           <TitleHeader title="Relatório" />
           <div className="flex items-center justify-center gap-12">
-            <div className="flex gap-12 justify-center items-center">
-              <div className="bg-background justify-center items-center shadow-md rounded-4xl p-6 w-220 h-120 border border-gray-200 relative hover:shadow-lg transition flex flex-col">
-                <div className="flex flex-col gap-1 flex-1">
-                  <h1>Selecione o Período para gerar Relatório</h1>
+							<div className="flex gap-12 justify-center items-center">
+								<div className="bg-background justify-center items-center shadow-md rounded-4xl p-6 w-220 h-120 border border-gray-200 relative hover:shadow-lg transition flex flex-col">
+									<div className="flex flex-col gap-1 flex-1">
+										<h2 className="p-4 py-6 border-2 border-seinfra-blue-light-200 rounded-2xl bg-background text-seinfra-blue-light-400 font-bold text-2xl shadow-lg text-center">
+											Relatório de Ordens de Serviço
+										</h2>
                   <div className="flex justify-center py-20 gap-20">
                     <div className="flex flex-col gap-2">
-                      <Label
-                        htmlFor="startDate"
-                        className="text-seinfra-blue-light-400 font-semibold"
-                      >
-                        Do dia:
-                      </Label>
-                      {/** biome-ignore lint/correctness/useUniqueElementIds: <explanation> */}
-                      <Input
-                        type="date"
-                        id="startDate"
-                        className="w-60! h-13! text-2xl"
-                      />
+                    <Label
+					htmlFor="startDate"
+													className="text-seinfra-blue-light-400 font-semibold"
+												>
+													Do dia:
+												</Label>
+
+												<Input
+													type="date"
+													id="startDate"
+													value={startDate}
+													onChange={(e) => setStartDate(e.target.value)}
+													className="w-60! h-13! text-2xl"
+												/>
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <Label
-                        htmlFor="endDate"
-                        className="text-seinfra-blue-light-400 font-semibold"
-                      >
-                        Até o dia:
-                      </Label>
-                      {/** biome-ignore lint/correctness/useUniqueElementIds: <explanation> */}
-                      <Input
-                        type="date"
-                        id="endDate"
-                        className="w-60! h-13! text-2xl"
-                      />
+                    <Label
+													htmlFor="endDate"
+													className="text-seinfra-blue-light-400 font-semibold"
+												>
+													Até o dia:
+												</Label>
+
+												<Input
+													type="date"
+													id="endDate"
+													value={endDate}
+													onChange={(e) => setEndDate(e.target.value)}
+													className="w-60! h-13! text-2xl"
+												/>
                     </div>
                   </div>
                 </div>
                 <Button
-                  type="button"
-                  className="bg-seinfra-blue-light-300 w-full rounded-full h-20 text-2xl font-bold text-background"
-                >
-                  Download
-                </Button>
+										type="button"
+										onClick={handleDownload}
+										className="bg-seinfra-blue-light-300 w-full rounded-full h-20 text-2xl font-bold text-background"
+									>
+										Gerar Relatório
+									</Button>
               </div>
             </div>
           </div>
@@ -87,6 +147,7 @@ export function FilterReportsPage() {
           </div>
         </div>
       </main>
+    </div>
     </div>
   );
 }

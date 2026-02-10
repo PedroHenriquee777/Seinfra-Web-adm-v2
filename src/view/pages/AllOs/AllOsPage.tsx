@@ -8,24 +8,40 @@ import { OsCard } from "@/components/os-card";
 import { TitleHeader } from "@/components/title-header";
 import { requestOrders } from "@/services/orders";
 import { mapOrderToOsCard } from "@/lib/utils";
+import { LoaderDialog } from "@/components/loader-dialog";
+import { ErrorOSDialog } from "@/components/error-os-dialog";
 
 export function AllOsPage() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [openError, setOpenError] = useState(false)
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await requestOrders("recente");
-        const mappedOrders = response.data.map(mapOrderToOsCard);
-        setOrders(mappedOrders);
-      } catch (error) {
-        console.error("Erro ao buscar todas as O.S:", error);
-      }
-    };
-    fetchOrders();
-  }, []);
+  const fetchOrders = async () => {
+		try {
+			setLoading(true);
+			const response = await requestOrders("recente");
+			const mappedOrders = response.data.map(mapOrderToOsCard);
+			setOrders(mappedOrders);
+		} catch (error) {
+			console.error("Erro ao buscar todas as O.S:", error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		fetchOrders();
+	}, []);
 
   return (
+    <div>       
+    <LoaderDialog 
+    open={loading}
+    />
+    <ErrorOSDialog 
+    open={openError}
+    onOpenChange={setOpenError}
+    />
     <div className="relative flex flex-col min-h-dvh h-auto overflow-hidden">
       <img
         src={pinkLine}
@@ -43,11 +59,11 @@ export function AllOsPage() {
             />
             <MenuDialog />
           </div>
-          <TitleHeader title="Todas as O.S" />
+          <TitleHeader title="Todas as Ordens de serviço"/>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 gap-x-10 w-full px-4">
             {orders.map((card, i) => (
-              <OsCard key={i} card={card} />
+              <OsCard key={i} card={card} onStatusChange={fetchOrders} />
             ))}
           </div>
 
@@ -63,6 +79,7 @@ export function AllOsPage() {
           className="absolute -right-1 sm:right-0 bottom-0"
         />
       </main>
+    </div>
     </div>
   );
 }
