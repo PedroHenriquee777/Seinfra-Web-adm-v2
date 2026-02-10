@@ -31,7 +31,7 @@ export const navItems = [
   },
 ];
 
-export type OsStatus = "new" | "inProgress" | "completed";
+export type OsStatus = "new" | "inProgress" | "completed" ;
 export function extractCategory(description: string): string { const match = description.match(/^\[(.*?)\]/); return match ? match[1] : "Outro"; }
 
 export interface OsCard {
@@ -43,7 +43,7 @@ export interface OsCard {
   dateRequestConcluded: string;
   status: OsStatus;
   id_order?: number;
-  applicant?: {
+  users?: {
     name: string;
     phone: string;
     cpf: string;

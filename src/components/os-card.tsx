@@ -4,6 +4,8 @@ import YellowRetangle from "@/assets/yellowRetangle.svg";
 import { Button } from "@/components/ui/button";
 import type { OsCard as OsCardType, OsStatus } from "@/lib/constants";
 import { OsDescDialog } from "./os-desc-dialog";
+import { formatCPF } from "@/utils/format-cpf";
+import { formatPhone } from "@/utils/format-phone";
 
 interface Props {
   card: OsCardType;
@@ -75,11 +77,11 @@ export function OsCard({ card, onStatusChange }: Props) {
         Reference={card.reference}
         Problem={card.problem}
         RequestDate={card.dateRequest}
-        ConclusionDate={card.dateRequestConcluded}
+        RequestDateConcluded={card.dateRequestConcluded}
         State={currentStatus.state}
-        CPF={card.applicant?.cpf || ""}
-        Name={card.applicant?.name || ""}
-        Number={card.applicant?.phone || ""}
+        CPF={formatCPF(card.users?.cpf || "")}
+        Name={card.users?.name || ""}
+        Number={formatPhone(card.users?.phone || "")}
         Variant={currentStatus.variant}
         IdOrder={card.id_order}
         onStatusChange={onStatusChange}
@@ -95,6 +97,11 @@ export function OsCard({ card, onStatusChange }: Props) {
         <p className="text-gray-400 text-xs mt-1">
           Data da solicitação: {card.dateRequest}
         </p>
+        {card.status === "completed" && card.dateRequestConcluded && (
+          <p className="text-gray-400 text-xs mt-1">
+            Data da conclusão da solicitação: {card.dateRequestConcluded}
+          </p>
+          )}
       </div>
     </div>
   );

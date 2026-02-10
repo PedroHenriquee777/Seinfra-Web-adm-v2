@@ -24,7 +24,7 @@ export function mapOrderToOsCard(order: any): OsCard {
       dateRequestConcluded: order.concluded_date ? new Date(order.concluded_date).toLocaleDateString("pt-BR") : "",
       status: statusMap[order.status] ?? "new",
       id_order: order.id_order,
-      applicant: order.users ? {
+      users: order.users ? {
         name: order.users.name || "",
         phone: order.users.phone || "",
         cpf: order.users.cpf || "",
