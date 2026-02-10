@@ -21,7 +21,7 @@ interface Props {
 	Reference: string;
 	Problem: string;
 	RequestDate: string;
-	ConclusionDate: string;
+	RequestDateConcluded: string;
 	State?: string | undefined;
 	CPF: string;
 	Name: string;
@@ -37,6 +37,7 @@ export function OsDescDialog({
 	Reference,
 	Problem,
 	RequestDate,
+	RequestDateConcluded,
 	State,
 	Trigger,
 	CPF,
@@ -233,6 +234,16 @@ export function OsDescDialog({
 													{RequestDate}
 												</p>
 											</div>
+											{State === "Finalizada" && (
+  												<div className="flex flex-col gap-2 text-sm">
+    												<p>
+      													<span className="text-seinfra-blue-light-700-70">
+        													Data de conclusão da solicitação:{" "}
+      													</span>
+      														{RequestDateConcluded}
+    												</p>
+  												</div>
+											)}
 										</div>
 										{Variant !== "default" && (
 											<div className="flex gap-12 justify-center items-center">
