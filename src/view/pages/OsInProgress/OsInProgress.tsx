@@ -21,7 +21,7 @@ export function OsInProgressPage() {
       setLoading(true);
       const response = await requestOrders("recente");
       const inProgressOrders = response.data
-        .filter((o: any) => o.status === "InProgress")
+        .filter((o: any) => o.status === "EM_EXECUCAO")
         .map((o: any) => {
           const mapped = mapOrderToOsCard(o);
           return { ...mapped, state: "inProgress" };
