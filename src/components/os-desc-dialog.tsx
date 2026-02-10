@@ -1,5 +1,4 @@
 import { type ReactNode, useState } from "react";
-import { toast } from "sonner";
 import {
 	Dialog,
 	DialogContent,
@@ -10,7 +9,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { alterarStatusOrdem, cancelarOrdem } from "@/services/orders";
+import {changeOrderStatus, cancelOrder} from "@/services/orders"
 import { ExcludedDialog } from "./excluded-dialog";
 import { ForwadedDialog } from "./forwarded-dialog";
 import { Button } from "./ui/button";
@@ -18,34 +17,34 @@ import { Button } from "./ui/button";
 interface Props {
 	Trigger: ReactNode;
 	Category: string;
-	Local: string;
+	Address: string;
 	Reference: string;
 	Problem: string;
 	RequestDate: string;
-	ConclusionDate: string;
+	RequestDateConcluded: string;
 	State?: string | undefined;
 	CPF: string;
 	Name: string;
 	Number: string;
 	Variant: "newOS" | "OSInProgess" | "default";
-	ImgURL?: string | undefined;
-	IdOrdem?: number;
+	IdOrder?: number;
 	onStatusChange?: () => void;
 }
 
 export function OsDescDialog({
 	Category,
-	Local,
+	Address,
 	Reference,
 	Problem,
 	RequestDate,
+	RequestDateConcluded,
 	State,
 	Trigger,
 	CPF,
 	Variant,
 	Name,
 	Number,
-	IdOrdem,
+	IdOrder,
 	onStatusChange,
 }: Props) {
 	const [open, setOpen] = useState(false);
@@ -53,24 +52,23 @@ export function OsDescDialog({
 	const [openForwardedDialog, setOpenForwardedDialog] = useState(false);
 	const [openExcludedDialog, setOpenExcludedDialog] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [justificativa, setJustificativa] = useState("");
+	const [justification, setJustification] = useState("");
 
-	const handleAlterarStatus = async (
-		novoStatus: "PENDENTE" | "EM_EXECUCAO" | "CONCLUIDO",
+	const handleChangeStatus = async (
+		newStatus: "PENDENTE" | "EM_EXECUCAO" | "CONCLUIDO",
 	) => {
-		if (!IdOrdem) {
-			toast.error("ID da ordem não encontrado");
+		if (!IdOrder) {
 			return;
 		}
 
 		try {
 			setLoading(true);
-			await alterarStatusOrdem({
-				id_ordem: IdOrdem,
-				status: novoStatus,
+			await changeOrderStatus({
+				id_order: IdOrder,
+				status: newStatus,
 			});
 			setOpen(false);
-			if (novoStatus === "EM_EXECUCAO") {
+			if (newStatus === "EM_EXECUCAO") {
 				setOpenForwardedDialog(true);
 			}
 			if (onStatusChange) {
@@ -79,42 +77,38 @@ export function OsDescDialog({
 				window.location.reload();
 			}
 		} catch (error) {
-			const mensagem =
-				error instanceof Error ? error.message : "Erro ao alterar status";
-			toast.error(mensagem);
+			error
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const handleEncaminhar = () => {
-		handleAlterarStatus("EM_EXECUCAO");
+	const handleForward= () => {
+		handleChangeStatus("EM_EXECUCAO");
 	};
 
-	const handleConcluir = () => {
-		handleAlterarStatus("CONCLUIDO");
+	const handleFinish = () => {
+		handleChangeStatus("CONCLUIDO");
 	};
 
-	const handleExcluir = async () => {
-		if (!IdOrdem) {
-			toast.error("ID da ordem não encontrado");
-			return;
+	const handleDelete = async () => {
+		if (!IdOrder) {
+			return ;
 		}
 
-		if (!justificativa.trim()) {
-			toast.error("É necessário informar uma justificativa para excluir");
+		if (!justification.trim()) {
 			return;
 		}
 
 		try {
 			setLoading(true);
-			await cancelarOrdem({
-				id_ordem: IdOrdem,
-				justificativa: justificativa.trim(),
+			await cancelOrder({
+				id_order: IdOrder,
+				justification: justification.trim(),
 			});
 			setOpenDeleteDialog(false);
 			setOpen(false);
-			setJustificativa("");
+			setJustification("");
 			setOpenExcludedDialog(true);
 			if (onStatusChange) {
 				onStatusChange();
@@ -122,9 +116,7 @@ export function OsDescDialog({
 				window.location.reload();
 			}
 		} catch (error) {
-			const mensagem =
-				error instanceof Error ? error.message : "Erro ao cancelar ordem";
-			toast.error(mensagem);
+			error
 		} finally {
 			setLoading(false);
 		}
@@ -213,7 +205,7 @@ export function OsDescDialog({
 										<span className="text-seinfra-blue-light-700-70">
 											Endereço:{" "}
 										</span>
-										{Local}
+										{Address}
 									</h3>
 									<h3>
 										<span className="text-seinfra-blue-light-700-70">
@@ -242,12 +234,22 @@ export function OsDescDialog({
 													{RequestDate}
 												</p>
 											</div>
+											{State === "Finalizada" && (
+  												<div className="flex flex-col gap-2 text-sm">
+    												<p>
+      													<span className="text-seinfra-blue-light-700-70">
+        													Data de conclusão da solicitação:{" "}
+      													</span>
+      														{RequestDateConcluded}
+    												</p>
+  												</div>
+											)}
 										</div>
 										{Variant !== "default" && (
 											<div className="flex gap-12 justify-center items-center">
 												<Button
 													onClick={() => setOpenDeleteDialog(true)}
-													disabled={loading || !IdOrdem}
+													disabled={loading || !IdOrder}
 													className={cn(
 														"w-auto! flex-1",
 														State === "Finalizada" && "bg-red-500",
@@ -266,10 +268,10 @@ export function OsDescDialog({
 												<Button
 													onClick={
 														Variant === "newOS"
-															? handleEncaminhar
-															: handleConcluir
+															? handleForward
+															: handleFinish
 													}
-													disabled={loading || !IdOrdem}
+													disabled={loading || !IdOrder}
 													className={cn(
 														"w-auto! flex-1",
 														State === "Finalizada" && "bg-seinfra-green-500",
@@ -313,8 +315,8 @@ export function OsDescDialog({
 								Justificativa <span className="text-red-500">*</span>
 							</label>
 							<textarea
-								value={justificativa}
-								onChange={(e) => setJustificativa(e.target.value)}
+								value={justification}
+								onChange={(e) => setJustification(e.target.value)}
 								placeholder="Informe o motivo do cancelamento..."
 								className={cn(
 									"min-h-20 w-115 px-3 py-2 rounded-md border border-input",
@@ -331,7 +333,7 @@ export function OsDescDialog({
 								type="button"
 								onClick={() => {
 									setOpenDeleteDialog(false);
-									setJustificativa("");
+									setJustification("");
 								}}
 								disabled={loading}
 								className="!w-40"
@@ -340,8 +342,8 @@ export function OsDescDialog({
 							</Button>
 							<Button
 								type="button"
-								onClick={handleExcluir}
-								disabled={loading || !justificativa.trim()}
+								onClick={handleDelete}
+								disabled={loading || !justification.trim()}
 								className="!w-fit bg-red-500 hover:bg-red-600 text-white mr-15"
 							>
 								{loading ? "Cancelando..." : "Confirmar cancelamento"}
