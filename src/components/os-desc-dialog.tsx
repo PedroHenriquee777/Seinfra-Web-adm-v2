@@ -26,7 +26,7 @@ interface Props {
 	CPF: string;
 	Name: string;
 	Number: string;
-	Variant: "newOS" | "OSInProgess" | "default";
+	Variant: "newOS" | "OSInProgess" | "canceled" | "default";
 	IdOrder?: number;
 	onStatusChange?: () => void;
 }
@@ -139,7 +139,7 @@ export function OsDescDialog({
 							`${State === "Finalizada" && "bg-seinfra-green-500"}`,
 							`${State === "Em execução" && "bg-seinfra-yellow-500"}`,
 							`${Variant === "newOS" && "bg-seinfra-blue-light-600-60"}`,
-							`${State === "Excluída" && "bg-red-500"}`,
+							`${State === "Cancelada" && "bg-red-500"}`,
 							"text-transparent",
 							"w-4 shrink-0",
 						)}
@@ -254,7 +254,7 @@ export function OsDescDialog({
 														"w-auto! flex-1",
 														State === "Finalizada" && "bg-red-500",
 														State === "Em execução" && "bg-red-500",
-														State === "Excluída" && "bg-red-500",
+														State === "Cancelada" && "bg-red-500",
 														Variant === "newOS" && !State && "bg-red-500",
 														Variant === "OSInProgess" &&
 															"bg-red-500 hover:bg-red-600",
@@ -276,7 +276,7 @@ export function OsDescDialog({
 														"w-auto! flex-1",
 														State === "Finalizada" && "bg-seinfra-green-500",
 														State === "Em execução" && "bg-seinfra-yellow-500",
-														State === "Excluída" && "bg-red-500",
+														State === "Cancelada" && "bg-red-500",
 														Variant === "newOS" &&
 															!State &&
 															"bg-seinfra-blue-light-600-60",
