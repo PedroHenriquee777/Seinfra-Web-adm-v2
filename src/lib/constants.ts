@@ -31,7 +31,7 @@ export const navItems = [
   },
 ];
 
-export type OsStatus = "new" | "inProgress" | "completed" ;
+export type OsStatus = "new" | "inProgress" | "completed" | "canceled" ;
 export function extractCategory(description: string): string { const match = description.match(/^\[(.*?)\]/); return match ? match[1] : "Outro"; }
 
 export interface OsCard {

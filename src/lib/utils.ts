@@ -12,7 +12,7 @@ export function mapOrderToOsCard(order: any): OsCard {
       PENDENTE: "new",
       EM_EXECUCAO:"inProgress",
       CONCLUIDO: "completed",
-      CANCELADO: "completed",
+      CANCELADO: "canceled",
     };
   
     return {

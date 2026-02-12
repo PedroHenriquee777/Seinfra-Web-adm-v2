@@ -1,6 +1,7 @@
 import BlueRetangle from "@/assets/blueRetangle.svg";
 import GreenRetangle from "@/assets/greenRetangle.svg";
 import YellowRetangle from "@/assets/yellowRetangle.svg";
+import RedRetangle from "@/assets/redRetangle.svg"
 import { Button } from "@/components/ui/button";
 import type { OsCard as OsCardType, OsStatus } from "@/lib/constants";
 import { OsDescDialog } from "./os-desc-dialog";
@@ -47,6 +48,13 @@ export function OsCard({ card, onStatusChange }: Props) {
       color: "bg-seinfra-green-500",
       variant: "default",
       state: "Finalizada",
+    },
+    canceled: {
+      retangle: RedRetangle,
+      button: "Cancelada",
+      color: "bg-seinfra-red-500",
+      variant: "default",
+      state: "Cancelada",
     },
   };
 
