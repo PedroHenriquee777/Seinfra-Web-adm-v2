@@ -15,7 +15,7 @@ export function MenuDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Menu className="absolute right-0 size-10 text-seinfra-blue-light-400 cursor-pointer" />
+        <Menu className="absolute right-6 size-10 text-seinfra-blue-light-400 cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-md sm:h-60 rounded-3xl border-transparent p-6">
         <DialogHeader>
@@ -23,24 +23,17 @@ export function MenuDialog() {
             Menu
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-4 sm:gap-10 mt-4">
-          <Button
-            type="button"
-            variant="link"
-            className="bg-seinfra-blue-light-600 w-full sm:w-42! text-xl rounded-2xl font-semibold text-background"
-          >
-            Colaboradores
-          </Button>
+        <div className="items-center">
           <Link to="/filter-reports">
             <Button
               type="button"
               variant="link"
-              className="bg-seinfra-blue-light-600 w-full sm:w-40! text-xl rounded-2xl font-semibold text-background"
+              className="bg-seinfra-blue-light-600 w-full text-xl rounded-2xl font-semibold text-background"
             >
               Relatório
             </Button>
           </Link>
-        </div>
+          </div>
         <DialogFooter className="sm:justify-center mt-6">
           <DialogClose asChild>
             <Link to="/login-admin">
