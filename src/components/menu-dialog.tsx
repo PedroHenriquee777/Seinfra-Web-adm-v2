@@ -10,8 +10,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { logout } from "@/services/auth";
+import { useNavigate } from "@tanstack/react-router";
 
 export function MenuDialog() {
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    try {
+      await logout();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      navigate({ to: "/login-admin", replace: true });
+    }
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,13 +46,14 @@ export function MenuDialog() {
               Relatório
             </Button>
           </Link>
-          </div>
+        </div>
         <DialogFooter className="sm:justify-center mt-6">
           <DialogClose asChild>
             <Link to="/login-admin">
               <Button
                 type="button"
                 variant="link"
+                onClick={handleLogout}
                 className="bg-seinfra-blue-light-300 w-full sm:w-40! h-12! text-xl rounded-2xl font-semibold text-background"
               >
                 Sair
