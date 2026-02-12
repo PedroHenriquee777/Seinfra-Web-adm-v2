@@ -12,6 +12,10 @@ export function registerAdmin(data: {
   return api.post("/registro-admin", data);
 }
 
+export function logout() {
+  return api.post("/logout")
+}
+
 export function getMe() {
   return api.get("/me")
 }
