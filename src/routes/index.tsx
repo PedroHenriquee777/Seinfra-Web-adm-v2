@@ -6,10 +6,8 @@ export const Route = createFileRoute("/")({
   beforeLoad: async () => {
     try {
       await getMe();
-    } catch (error) {
-      throw redirect({
-        to: "/login-admin",
-      });
+    } catch {
+      throw redirect({ to: "/login-admin" });
     }
   },
   component: HomePage,
