@@ -4,7 +4,6 @@ import { getMe } from "@/services/auth";
 
 export const Route = createFileRoute("/login-admin")({
   beforeLoad: async () => {
-    await getMe();
     try {
       await getMe();
       throw redirect({ to: "/" });
