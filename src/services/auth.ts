@@ -11,3 +11,7 @@ export function registerAdmin(data: {
 }) {
   return api.post("/registro-admin", data);
 }
+
+export function getMe() {
+  return api.get("/me")
+}
