@@ -124,7 +124,7 @@ export function FilterReportsPage() {
                   <Button
                     type="button"
                     onClick={handleDownload}
-                    className="bg-seinfra-blue-light-300 w-full rounded-full h-20 text-2xl font-bold text-background"
+                    className="bg-seinfra-blue-light-300 w-full rounded-full h-20 text-2xl font-bold text-background cursor-pointer"
                   >
                     Gerar Relatório
                   </Button>

@@ -21,7 +21,7 @@ export default function PasswordInput({
       <button
         type="button"
         onClick={() => setIsVisible((prev) => !prev)}
-        className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer "
+        className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
       >
         <Icon className="size-5 text-seinfra-blue-light-300 transition:150 hover:text-seinfra-blue-light-400" />
       </button>

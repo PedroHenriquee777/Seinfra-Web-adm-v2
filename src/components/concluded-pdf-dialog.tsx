@@ -4,17 +4,29 @@ import yellowLine from "@/assets/yellowLine.svg";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface ForwadedDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function ConcludedPDFDialog({ open, onOpenChange }: ForwadedDialogProps) {
+export function ConcludedPDFDialog({
+  open,
+  onOpenChange,
+}: ForwadedDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="h-84 p-10 sm:max-w-md sm:h-90 sm:p-6 rounded-3xl border-transparent">
+        <VisuallyHidden>
+          <DialogTitle>seinfra</DialogTitle>
+          <DialogDescription>
+            Indicador de relatório de Ordem de Serviço da aplicação.
+          </DialogDescription>
+        </VisuallyHidden>
         <img
           src={pinkLine}
           alt="Linha Rosa Background"

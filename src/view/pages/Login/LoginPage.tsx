@@ -105,7 +105,7 @@ export function LoginPage() {
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
-                <Button className="mt-14">Entrar</Button>
+                <Button className="mt-14 cursor-pointer">Entrar</Button>
               </Field>
             )}
           />
