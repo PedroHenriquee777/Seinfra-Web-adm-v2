@@ -12,24 +12,32 @@ export const adminLoginSchema = z.object({
 });
 
 export const adminRegisterSchema = z
-  .object({
-    password: z
-      .string()
-      .min(8, { message: "A senha deve conter no mínimo 8 caracteres" }),
-    confirmPassword: z.string(),
-    phone: z
-      .string()
-      .regex(/^[0-9]{2}\s[0-9]{5}-[0-9]{4}$/, { message: "Numero invalido" }),
-    cpf: z
-      .string()
-      .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, { message: "CPF inválido" }),
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "As senhas devem ser iguais",
-        path: ["confirmPassword"],
-      });
-    }
-  });
+.object({
+  password: z
+    .string()
+    .min(8, { message: "A senha deve conter no mínimo 8 caracteres" }),
+
+  confirmPassword: z.string(),
+
+  name: z.string().min(5, { message: "Preencha o campo com seu nome completo." }) 
+  .max(59, { message: "Digite no máximo 60 caracteres." })
+  .regex(/^[A-Za-z]+$/, "Apenas letras são permitidas."),
+  
+  phone: z
+    .string()
+    .regex(/^[0-9]{2}\s[0-9]{5}-[0-9]{4}$/, { message: "Numero invalido" }),
+
+  cpf: z
+    .string()
+    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, { message: "CPF inválido" }),
+
+})
+.superRefine(({ confirmPassword, password }, ctx) => {
+  if (confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "As senhas devem ser iguais",
+      path: ["confirmPassword"],
+    });
+  }
+});
