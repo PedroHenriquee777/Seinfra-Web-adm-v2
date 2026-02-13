@@ -5,9 +5,14 @@ import { getMe } from "@/services/auth";
 export const Route = createFileRoute("/")({
   beforeLoad: async () => {
     try {
-      await getMe();
+      const { data } = await getMe();
+
+      if (data.role !== "ADMIN") {
+        throw redirect({ to: "/login" });
+      }
+
     } catch {
-      throw redirect({ to: "/login-admin" });
+      throw redirect({ to: "/login" });
     }
   },
   component: HomePage,
