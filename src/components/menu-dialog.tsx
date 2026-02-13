@@ -9,9 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { logout } from "@/services/auth";
 import { useNavigate } from "@tanstack/react-router";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function MenuDialog() {
   const navigate = useNavigate();
@@ -31,6 +33,11 @@ export function MenuDialog() {
         <Menu className="absolute right-6 size-10 text-seinfra-blue-light-400 cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-md sm:h-60 rounded-3xl border-transparent p-6">
+      <VisuallyHidden>
+          <DialogDescription>
+            Indicador de relatório de Ordem de Serviço da aplicação.
+          </DialogDescription>
+        </VisuallyHidden>
         <DialogHeader>
           <DialogTitle className="flex justify-center font-bold text-seinfra-blue-light-400">
             Menu
@@ -41,7 +48,7 @@ export function MenuDialog() {
             <Button
               type="button"
               variant="link"
-              className="bg-seinfra-blue-light-600 w-full text-xl rounded-2xl font-semibold text-background"
+              className="bg-seinfra-blue-light-600 w-full text-xl rounded-2xl font-semibold text-background cursor-pointer"
             >
               Relatório
             </Button>
@@ -54,7 +61,7 @@ export function MenuDialog() {
                 type="button"
                 variant="link"
                 onClick={handleLogout}
-                className="bg-seinfra-blue-light-300 w-full sm:w-40! h-12! text-xl rounded-2xl font-semibold text-background"
+                className="bg-seinfra-blue-light-300 w-full sm:w-40! h-12! text-xl rounded-2xl font-semibold text-background cursor-pointer"
               >
                 Sair
               </Button>
