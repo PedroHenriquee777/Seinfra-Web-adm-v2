@@ -251,7 +251,7 @@ export function OsDescDialog({
 													onClick={() => setOpenDeleteDialog(true)}
 													disabled={loading || !IdOrder}
 													className={cn(
-														"w-auto! flex-1",
+														"w-auto! flex-1 cursor-pointer",
 														State === "Finalizada" && "bg-red-500",
 														State === "Em execução" && "bg-red-500",
 														State === "Cancelada" && "bg-red-500",
@@ -273,7 +273,7 @@ export function OsDescDialog({
 													}
 													disabled={loading || !IdOrder}
 													className={cn(
-														"w-auto! flex-1",
+														"w-auto! flex-1 cursor-pointer",
 														State === "Finalizada" && "bg-seinfra-green-500",
 														State === "Em execução" && "bg-seinfra-yellow-500",
 														State === "Cancelada" && "bg-red-500",
@@ -336,7 +336,7 @@ export function OsDescDialog({
 									setJustification("");
 								}}
 								disabled={loading}
-								className="!w-40"
+								className="!w-40 cursor-pointer"
 							>
 								Cancelar
 							</Button>
@@ -344,7 +344,7 @@ export function OsDescDialog({
 								type="button"
 								onClick={handleDelete}
 								disabled={loading || !justification.trim()}
-								className="!w-fit bg-red-500 hover:bg-red-600 text-white mr-15"
+								className="!w-fit bg-red-500 hover:bg-red-600 text-white mr-15 cursor-pointer"
 							>
 								{loading ? "Cancelando..." : "Confirmar cancelamento"}
 							</Button>
