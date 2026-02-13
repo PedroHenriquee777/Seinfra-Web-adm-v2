@@ -21,7 +21,7 @@ export const adminRegisterSchema = z
 
   name: z.string().min(5, { message: "Preencha o campo com seu nome completo." }) 
   .max(59, { message: "Digite no máximo 60 caracteres." })
-  .regex(/^[A-Za-z]+$/, "Apenas letras são permitidas."),
+  .regex(/^[A-Za-zÀ-ÿ\s]+$/, "Apenas letras são permitidas."),
   
   phone: z
     .string()
