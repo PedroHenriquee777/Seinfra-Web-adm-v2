@@ -15,7 +15,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { loginAdmin } from "@/services/auth";
+import { login } from "@/services/auth";
 import { adminLoginSchema } from "@/services/zodSchemas";
 import { ErrorLoginDialog } from "@/components/error-login";
 import { LoaderDialog } from "@/components/loader-dialog";
@@ -39,7 +39,7 @@ export function LoginPage() {
     try {
       setLoading(true)
 
-      await loginAdmin({
+      await login({
         cpf: data.cpf.replace(/\D/g, ""),
         password: data.password,
         });
