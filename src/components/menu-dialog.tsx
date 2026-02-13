@@ -22,7 +22,7 @@ export function MenuDialog() {
     } catch (error) {
       console.error(error);
     } finally {
-      navigate({ to: "/login-admin", replace: true });
+      navigate({ to: "/login", replace: true });
     }
   }
   return (
@@ -49,7 +49,7 @@ export function MenuDialog() {
         </div>
         <DialogFooter className="sm:justify-center mt-6">
           <DialogClose asChild>
-            <Link to="/login-admin">
+            <Link to="/login">
               <Button
                 type="button"
                 variant="link"
