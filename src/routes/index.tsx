@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
     try {
       const { data } = await getMe();
 
-      if (data.role !== "ADMIN") {
+      if (data.user.role !== "ADMIN") {
         throw redirect({ to: "/login-admin" });
       }
 
