@@ -6,6 +6,7 @@ export function loginAdmin(data: { cpf: string; password: string }) {
 
 export function registerAdmin(data: {
   cpf: string;
+  name: string;
   password: string;
   phone: string;
 }) {
