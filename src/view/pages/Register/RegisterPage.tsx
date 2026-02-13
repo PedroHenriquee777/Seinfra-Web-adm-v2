@@ -55,7 +55,7 @@ export function RegisterPage() {
 
         setSuccessOpen(true)
         
-        navigate({ to: "/login", replace: true });
+        navigate({ to: "/login-admin", replace: true });
       }
     } catch (error: any) {
       setOpenError(true);
@@ -81,7 +81,7 @@ export function RegisterPage() {
         className="flex gap-8 justify-center items-center flex-col"
       >
         <div className="flex flex-col gap-8 text-center mt-20 w-screen">
-          <Link to="/login" className="z-1 hover:cursor-pointer lg:hidden">
+          <Link to="/login-admin" className="z-1 hover:cursor-pointer lg:hidden">
             <ChevronLeftIcon className="text-seinfra-yellow-400 mx-2 sm:mx-4 size-8" />
           </Link>
           <div className="flex flex-col gap-8">

@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { LoginPage } from "@/view/pages/Login/LoginPage";
 import { getMe } from "@/services/auth";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/login-admin")({
   beforeLoad: async () => {
     try {
       const { data } = await getMe();
@@ -10,7 +10,10 @@ export const Route = createFileRoute("/login")({
       if (data.role === "ADMIN") {
         throw redirect({ to: "/" });
       }
-      return;
+
+      if (data.role === "USER") {
+        throw redirect({ to: "/login-admin" });
+      }
     } catch {
       return;
     }
