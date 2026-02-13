@@ -7,8 +7,8 @@ export const Route = createFileRoute("/")({
     try {
       const { data } = await getMe();
 
-      if (data.role === "ADMIN") {
-        throw redirect({ to: "/" });
+      if (data.role !== "ADMIN") {
+        throw redirect({ to: "/login" });
       }
     } catch {
       throw redirect({ to: "/login" });
