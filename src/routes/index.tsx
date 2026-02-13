@@ -8,10 +8,11 @@ export const Route = createFileRoute("/")({
       const { data } = await getMe();
 
       if (data.role !== "ADMIN") {
-        throw redirect({ to: "/login" });
+        throw redirect({ to: "/login-admin" });
       }
+
     } catch {
-      throw redirect({ to: "/login" });
+      throw redirect({ to: "/login-admin" });
     }
   },
   component: HomePage,

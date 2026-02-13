@@ -13,6 +13,7 @@ import { Route as RegisterAdminRouteImport } from './routes/register-admin'
 import { Route as OsInProgressRouteImport } from './routes/os-in-progress'
 import { Route as OsCompletedRouteImport } from './routes/os-completed'
 import { Route as NewOsRouteImport } from './routes/new-os'
+import { Route as LoginAdminRouteImport } from './routes/login-admin'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FilterReportsRouteImport } from './routes/filter-reports'
 import { Route as AllOsRouteImport } from './routes/all-os'
@@ -36,6 +37,11 @@ const OsCompletedRoute = OsCompletedRouteImport.update({
 const NewOsRoute = NewOsRouteImport.update({
   id: '/new-os',
   path: '/new-os',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login-admin',
+  path: '/login-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/all-os': typeof AllOsRoute
   '/filter-reports': typeof FilterReportsRoute
   '/login': typeof LoginRoute
+  '/login-admin': typeof LoginAdminRoute
   '/new-os': typeof NewOsRoute
   '/os-completed': typeof OsCompletedRoute
   '/os-in-progress': typeof OsInProgressRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/all-os': typeof AllOsRoute
   '/filter-reports': typeof FilterReportsRoute
   '/login': typeof LoginRoute
+  '/login-admin': typeof LoginAdminRoute
   '/new-os': typeof NewOsRoute
   '/os-completed': typeof OsCompletedRoute
   '/os-in-progress': typeof OsInProgressRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/all-os': typeof AllOsRoute
   '/filter-reports': typeof FilterReportsRoute
   '/login': typeof LoginRoute
+  '/login-admin': typeof LoginAdminRoute
   '/new-os': typeof NewOsRoute
   '/os-completed': typeof OsCompletedRoute
   '/os-in-progress': typeof OsInProgressRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/all-os'
     | '/filter-reports'
     | '/login'
+    | '/login-admin'
     | '/new-os'
     | '/os-completed'
     | '/os-in-progress'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/all-os'
     | '/filter-reports'
     | '/login'
+    | '/login-admin'
     | '/new-os'
     | '/os-completed'
     | '/os-in-progress'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/all-os'
     | '/filter-reports'
     | '/login'
+    | '/login-admin'
     | '/new-os'
     | '/os-completed'
     | '/os-in-progress'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AllOsRoute: typeof AllOsRoute
   FilterReportsRoute: typeof FilterReportsRoute
   LoginRoute: typeof LoginRoute
+  LoginAdminRoute: typeof LoginAdminRoute
   NewOsRoute: typeof NewOsRoute
   OsCompletedRoute: typeof OsCompletedRoute
   OsInProgressRoute: typeof OsInProgressRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/new-os'
       fullPath: '/new-os'
       preLoaderRoute: typeof NewOsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login-admin': {
+      id: '/login-admin'
+      path: '/login-admin'
+      fullPath: '/login-admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AllOsRoute: AllOsRoute,
   FilterReportsRoute: FilterReportsRoute,
   LoginRoute: LoginRoute,
+  LoginAdminRoute: LoginAdminRoute,
   NewOsRoute: NewOsRoute,
   OsCompletedRoute: OsCompletedRoute,
   OsInProgressRoute: OsInProgressRoute,
